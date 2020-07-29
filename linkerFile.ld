@@ -7,33 +7,26 @@ MEMORY
 SECTIONS
 {
 	.text :
+	AT(0x0)
 	{
-		./object/runtime/startup.o (INT_VECTOR)
+		_text = .;
+		*(.vectors)
 		*(.text*)
-		. = ALIGN(2);
-	} > FLASH
-
-	.rodata :
-	{
-		*(.rodata*)
-		. = ALIGN(1);
+		_etext = .;
 	} > FLASH
 
 	.data :
+	AT( ADDR(.text) + SIZEOF(.text) )
 	{
+		_data = .;
 		*(.data*)
-		. = ALIGN(1);
-	} > RAM
-
-	.bss :
-	{
 		*(.bss*)
-		. = ALIGN(1);
+		*(.rodata*)
+		_edata = .;
 	} > RAM
 }
 
-ENTRY( _Reset ) /* refers to _Reset vector table in assembly file */
-
+ENTRY( _init )
 
 
 
