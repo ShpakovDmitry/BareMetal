@@ -8,7 +8,7 @@ SECTIONS
 {
 	.text :
 	{
-		startup.o (INT_VECTOR)
+		./object/runtime/startup.o (INT_VECTOR)
 		*(.text*)
 		. = ALIGN(2);
 	} > FLASH

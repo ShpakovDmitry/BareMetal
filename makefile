@@ -1,22 +1,45 @@
-ARCH = avr
-MCU = attiny2313
-MCU_ARCH = $(ARCH)25
-CC = $(ARCH)-gcc
-AS = $(ARCH)-as
-LD = $(ARCH)-ld
+.PHONY := all clean
+.DEFAULT_GOAL := all
 
-app_object_file:
-	$(CC) -c -mmcu=$(MCU) main.c -o main.o
+ARCH := avr
+MCU := attiny2313
+MCU_ARCH := $(ARCH)25
+CC := $(ARCH)-gcc
+AS := $(ARCH)-as
+LD := $(ARCH)-ld
 
-startup_object_file:
-	$(AS) -mmcu=$(MCU_ARCH) startup.s -o startup.o
+SOURCE_DIR := source
+RUNTIME_DIR := runtime
+BUILD_DIR := build
+OBJECT_DIR := object
+DIRS := $(BUILD_DIR) $(OBJECT_DIR) $(OBJECT_DIR)/runtime $(OBJECT_DIR)/cc
 
-link_all_files:
-	$(LD) -T linkerFile.ld main.o startup.o -o boot.elf
+LINKER_SCRIPT_FILE := linkerFile.ld
 
-all: app_object_file startup_object_file link_all_files
+CC_SRC_FILES := $(wildcard $(SOURCE_DIR)/*.c)
+AS_SRC_FILES := $(wildcard $(RUNTIME_DIR)/*.s)
+
+CC_OBJ_FILES := $(CC_SRC_FILES:$(SOURCE_DIR)/%.c=$(OBJECT_DIR)/cc/%.o)
+AS_OBJ_FILES := $(AS_SRC_FILES:$(RUNTIME_DIR)/%.s=$(OBJECT_DIR)/runtime/%.o)
+
+CC_FLAGS := -c -Wall -Werror -mmcu=$(MCU)  -nostartfiles -nodefaultlibs -nostdlib
+AS_FLAGS := -mmcu=$(MCU_ARCH)
+LD_FLAGS := -T $(LINKER_SCRIPT_FILE)
+
+
+$(OBJECT_DIR)/cc/%.o: $(SOURCE_DIR)/%.c
+	$(CC) $(CC_FLAGS) $^ -o $@
+
+$(OBJECT_DIR)/runtime/%.o: $(RUNTIME_DIR)/%.s
+	cd $(RUNTIME_DIR) && $(AS) $(AS_FLAGS) ../$^ -o ../$@
+
+$(BUILD_DIR)/firmware.elf: $(AS_OBJ_FILES) $(CC_OBJ_FILES)
+	$(LD) $(LD_FLAGS) $^ -o $@
+
+$(BUILD_DIR):
+	mkdir --parents $(DIRS)
 
 clean:
-	rm -rf *.o
-	rm -rf *.out
-	rm -rf *.elf
+	rm -rf $(DIRS)
+
+all: $(BUILD_DIR) $(BUILD_DIR)/firmware.elf
