@@ -1,32 +1,33 @@
-.section INT_VECTOR, "x"
-.global _Reset
+.include "attiny2313def.inc"
 
-_Reset:
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	rjmp ResetHandler
-	
-ResetHandler:
-	eor r1, r1
-	out 0x3f, r1
-	ldi r28, 0xdf
-	out 0x3d, r28
-	rcall entry
-loop:
-	rjmp loop
+.section .text,"ax",@progbits
+
+.global _init
+_init:
+	; stack setup
+	ldi r20, lo8(RAMEND - 1)
+	out SPL, r20
+
+	; copy data to RAM
+	ldi ZH, hi8(_etext)
+	ldi ZL, lo8(_etext)
+	ldi XH, hi8(_data)
+	ldi XL, lo8(_data)
+
+	ldi r20, hi8(_edata)
+	ldi r21, lo8(_edata)
+
+	rjmp copyCompare
+
+copyStore:
+	lpm r0, Z+
+	st X+, r0
+
+copyCompare:
+	cp XH, r20
+	cpc XL, r21
+	brlo copyStore
+	rcall entry	; main is called, here it is entry
+
+infLoop:
+	rjmp infLoop	; will be executed whe main returns
