@@ -26,7 +26,6 @@ SECTIONS
 	} > RAM
 }
 
-ENTRY( _init )
 
 
 
