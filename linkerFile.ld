@@ -1,14 +1,4 @@
-FLASH_BASE = 0x00000000;
-SRAM_BASE  = 0x00800000;
-
-REG_FILE_SIZE = 0x20;
-IO_FILE_SIZE  =  0x40;
-SRAM_SIZE     = 0x80;
-FLASH_SIZE    = 2K;
-
-SRAMEND   = REG_FILE_SIZE + IO_FILE_SIZE + SRAM_SIZE;
-SRAMSTART = REG_FILE_SIZE + IO_FILE_SIZE;
-
+INCLUDE attiny2313.ld
 
 MEMORY
 {
@@ -33,7 +23,7 @@ SECTIONS
 		*(.bss*)
 		*(.rodata*)
 		_edata = .;
-	} > RAM
+	} > SRAM
 }
 
 
