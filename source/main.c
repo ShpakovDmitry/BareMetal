@@ -1,4 +1,4 @@
-int entry(void)
+int main(void)
 {
 	return 0;
 }

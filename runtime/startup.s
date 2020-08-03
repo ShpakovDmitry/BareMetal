@@ -27,7 +27,7 @@ copyCompare:
 	cp XH, r20
 	cpc XL, r21
 	brlo copyStore
-	rcall entry	; main is called, here it is entry
+	rcall main	; main is called, here it is entry
 
 infLoop:
 	rjmp infLoop	; will be executed whe main returns
