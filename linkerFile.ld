@@ -7,7 +7,6 @@ MEMORY
 SECTIONS
 {
 	.text :
-	AT(0x0)
 	{
 		_text = .;
 		*(.vectors)
@@ -16,7 +15,6 @@ SECTIONS
 	} > FLASH
 
 	.data :
-	AT( ADDR(.text) + SIZEOF(.text) )
 	{
 		_data = .;
 		*(.data*)
@@ -25,8 +23,6 @@ SECTIONS
 		_edata = .;
 	} > RAM
 }
-
-
 
 
 /****                       Notes                       ****/
