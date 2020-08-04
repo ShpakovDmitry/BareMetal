@@ -1,4 +1,4 @@
-INCLUDE attiny2313.ld
+INCLUDE etc/linker/attiny2313.ld
 
 MEMORY
 {
