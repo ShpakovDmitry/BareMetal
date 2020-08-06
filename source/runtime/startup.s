@@ -30,7 +30,7 @@ copyData:				; copy data to RAM
 	ldi XL, lo8(_sdata)
 	ldi r20, hi8(_edata)
 	ldi r21, lo8(_edata)
-	rjmp copyCompare
+	rjmp copyDataStart
 
 copyDataLoop:
 	lpm r0, Z+
@@ -39,8 +39,8 @@ copyDataLoop:
 copyDataStart:
 	cp  XL, r20
 	cpc XH, r21
-	brlo copyStore
-	rcall main	; main is called, here it is entry
+	brlo copyDataLoop
+	rcall main			; main is called, here it is entry
 
 infLoop:
-	rjmp infLoop	; will be executed whe main returns
+	rjmp infLoop			; will be executed whe main returns
