@@ -11,8 +11,8 @@ _init:
 	; copy data to RAM
 	ldi ZH, hi8(_etext)
 	ldi ZL, lo8(_etext)
-	ldi XH, hi8(_data)
-	ldi XL, lo8(_data)
+	ldi XH, hi8(_sdata)
+	ldi XL, lo8(_sdata)
 
 	ldi r20, hi8(_edata)
 	ldi r21, lo8(_edata)

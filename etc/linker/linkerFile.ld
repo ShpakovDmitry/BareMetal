@@ -16,13 +16,26 @@ SECTIONS
 		_etext = .;
 	} > FLASH
 
+	.rodata :
+	{
+		_srodata = .;
+		*(.rodata*)
+		_erodata = .;
+	} > FLASH
+
 	.data :
 	{
-		_data = .;
+		_sdata = .;
 		*(.data*)
-		*(.bss*)
 		*(.rodata*)
 		_edata = .;
+	} > SRAM
+
+	.bss :
+	{
+		_sbss = .;
+		*(.bss*)
+		_ebss = .;
 	} > SRAM
 }
 
