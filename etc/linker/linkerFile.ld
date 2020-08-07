@@ -27,7 +27,6 @@ SECTIONS
 	{
 		_sdata = .;
 		*(.data*)
-		*(.rodata*)
 		_edata = .;
 	} > SRAM
 
