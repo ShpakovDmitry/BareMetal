@@ -26,7 +26,7 @@ AS_SRC_FILES := $(wildcard $(RUNTIME_DIR)/*.s)
 CC_OBJ_FILES := $(CC_SRC_FILES:$(SOURCE_DIR)/%.c=$(OBJECT_DIR)/cc/%.o)
 AS_OBJ_FILES := $(AS_SRC_FILES:$(RUNTIME_DIR)/%.s=$(OBJECT_DIR)/runtime/%.o)
 
-CC_FLAGS := -c -Wall -Werror -idirafter ./include -mmcu=$(MCU) -nostartfiles -nodefaultlibs -nostdlib
+CC_FLAGS := -c -Wall -Werror -idirafter ./include -mmcu=$(MCU) -nostartfiles -nostdlib -lgcc
 AS_FLAGS := -mmcu=$(MCU_ARCH) -I ../../include
 LD_FLAGS := -T $(LINKER_SCRIPT_FILE) -Map $(BUILD_DIR)/$(TARGET).map
 OBJDUMP_FLAGS := --disassemble-all -m $(MCU_ARCH) --private=mem-usage $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).s
