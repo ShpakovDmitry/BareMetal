@@ -4,11 +4,11 @@ MEMORY {
 }
 
 SECTIONS {
-    .vectors ALIGN(4) : AT (0x00000000) {
-        KEEP(*(.vectors))
-    } > FLASH
-
+    . = ORIGIN(FLASH);
     .text ALIGN(4) : {
+        KEEP(*(.stack))
+        KEEP(*(.exception_vectors))
+        KEEP(*(.isr_vectors))
         *(.text*)
         KEEP(*(.rodata*))
     } > FLASH
