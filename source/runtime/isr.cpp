@@ -13,7 +13,7 @@ __attribute__((section(".stack"), used)) uint32_t *__stack_init = &__stacktop;
 
 typedef void (*funcPtr)();
 
-extern "C" void __stop(void) {
+extern "C" void __stop(void) __attribute__((isr)) {
     while (true) {
         ;
     }
@@ -48,4 +48,101 @@ __attribute__((section(".exception_vectors"), used)) funcPtr __exceptionVectors[
     DUMMY_Handler,
     PENDSV_Handler,
     SYSTICK_Handler
+}
+
+void POWERCLOCK_Handler(void)        __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void RADIO_Handler(void)             __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void UART0_Handler(void)             __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void SPI0TWI0_Handler(void)          __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void SPI1TWI1_Handler(void)          __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void NFCTAG_Handler(void)            __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void GPIOTE_Handler(void)            __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void SAADC_Handler(void)             __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void TIMER0_Handler(void)            __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void TIMER1_Handler(void)            __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void TIMER2_Handler(void)            __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void RTC0_Handler(void)              __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void TEMP_Handler(void)              __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void RNG_Handler(void)               __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void ECB_Handler(void)               __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void AARCCM_Handler(void)            __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void WDT_Handler(void)               __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void RTC1_Handler(void)              __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void QDEC_Handler(void)              __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void COMPLPCOMP_Handler(void)        __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void EGU0SWI0_Handler(void)          __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void EGU1SWI1_Handler(void)          __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void EGU2SWI2_Handler(void)          __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void EGU3SWI3_Handler(void)          __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void EGU4SWI4_Handler(void)          __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void EGU5SWI5_Handler(void)          __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void TIMER3_Handler(void)            __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void TIMER4_Handler(void)            __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void PWM0_Handler(void)              __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void PDM_Handler(void)               __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void ACLNVMC_Handler(void)           __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void PPI_Handler(void)               __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void MVU_Handler(void)               __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void PWM1_Handler(void)              __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void PWM2_Handler(void)              __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void SPI2_Handler(void)              __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void RTC2_Handler(void)              __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void I2C_Handler(void)               __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void FPU_Handler(void)               __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void USBD_Handler(void)              __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void UART1_Handler(void)             __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void QSPI_Handler(void)              __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void CCHOSTRGFCRYPTO_Handler(void)   __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void PWM3_Handler(void)              __attribute__ ((weak, alias("DUMMY_HANDLER")));
+void SPI3_Handler(void)              __attribute__ ((weak, alias("DUMMY_HANDLER")));
+
+__attribute__((section(".isr_vectors"), used)) funcPtr __isrVectors[] = {
+    POWERCLOCK_Handler,
+    RADIO_Handler,
+    UART0_Handler,
+    SPI0TWI0_Handler,
+    SPI1TWI1_Handler,
+    NFCTAG_Handler,
+    GPIOTE_Handler,
+    SAADC_Handler,
+    TIMER0_Handler,
+    TIMER1_Handler,
+    TIMER2_Handler,
+    RTC0_Handler,
+    TEMP_Handler,
+    RNG_Handler,
+    ECB_Handler,
+    AARCCM_Handler,
+    WDT_Handler,
+    RTC1_Handler,
+    QDEC_Handler,
+    COMPLPCOMP_Handler,
+    EGU0SWI0_Handler,
+    EGU1SWI1_Handler,
+    EGU2SWI2_Handler,
+    EGU3SWI3_Handler,
+    EGU4SWI4_Handler,
+    EGU5SWI5_Handler,
+    TIMER3_Handler,
+    TIMER4_Handler,
+    PWM0_Handler,
+    PDM_Handler,
+    ACLNVMC_Handler,
+    PPI_Handler,
+    MVU_Handler,
+    PWM1_Handler,
+    PWM2_Handler,
+    SPI2_Handler,
+    RTC2_Handler,
+    I2C_Handler,
+    FPU_Handler,
+    USBD_Handler,
+    UART1_Handler,
+    QSPI_Handler,
+    CCHOSTRGFCRYPTO_Handler,
+    DUMMY_Handler,
+    DUMMY_Handler,
+    PWM3_Handler,
+    DUMMY_Handler,
+    SPI3_Handler
 }
