@@ -3,8 +3,6 @@ MEMORY {
     RAM    (rwx) : ORIGIN = 0x20000000, LENGTH = 256K
 }
 
-stackTop = ALIGN (ORIGIN(RAM) + LENGTH(RAM), 8); /* according to ARM should be
-                                                    aligned to 8-byte border */
 SECTIONS {
     .vectors ALIGN(4) : AT (0x00000000) {
         KEEP(*(.vectors))
@@ -35,6 +33,8 @@ SECTIONS {
 
     __etext = .;
 
+    /* according to ARM should be aligned to 8-byte border */
+    __stacktop = ALIGN (ORIGIN(RAM) + LENGTH(RAM), 8);
     __data_load = LOADADDR(.data);
     . = ORIGIN(RAM);
 
@@ -50,6 +50,9 @@ SECTIONS {
         *(.bss*)
         . = ALIGN(4);
         __bss_end = .;
+        *(.noinit*)
+    } > RAM
 
-    }
+    . = ALIGN(4)
+    __heap_start = .;
 }
