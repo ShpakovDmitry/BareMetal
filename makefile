@@ -17,7 +17,7 @@ SOURCE_DIR := source
 BUILD_DIR := build
 OBJECT_DIR := $(BUILD_DIR)/object
 LINKER_SCRIPT_DIR := etc/linker
-DIRS := $(BUILD_DIR) $(OBJECT_DIR)
+DIRS := $(BUILD_DIR) $(OBJECT_DIR) $(OBJECT_DIR)/runtime
 
 LINKER_SCRIPT_FILE := $(LINKER_SCRIPT_DIR)/nrf52840.ld
 CXX_SRC_FILES := $(wildcard $(SOURCE_DIR)/*.cpp)
@@ -27,7 +27,7 @@ CXX_OBJ_FILES := $(CXX_SRC_FILES:$(SOURCE_DIR)/%.cpp=$(OBJECT_DIR)/%.o)
 
 CXX_FLAGS := -c -Wall -Werror -mcpu=$(MCU) -mthumb -Os -std=c++17
 CXX_FLAGS += -idirafter ./include -fdata-sections -ffunction-sections
-CXX_FLAGS += -ffreestanding -v -nostdinc -idirafter ./include/stdlib
+CXX_FLAGS += -ffreestanding 
 CXX_FLAGS += -fms-extensions -fno-exceptions -fno-rtti -fno-use-cxa-atexit
 CXX_FLAGS += -fno-threadsafe-statics -fstrict-volatile-bitfields -Wextra
 CXX_FLAGS += -Wcast-align -Wconversion -Wsign-conversion -Wold-style-cast
