@@ -53,6 +53,6 @@ SECTIONS {
         *(.noinit*)
     } > RAM
 
-    . = ALIGN(4)
+    . = ALIGN(4);
     __heap_start = .;
 }
