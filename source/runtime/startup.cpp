@@ -1,3 +1,9 @@
+/*
+ *   file: startup.cpp
+ * author: ShpakovDmitry
+ *   date: 2020-11-27
+ */
+
 #include <cstdint>
 
 typedef void (*funcPtr)();
