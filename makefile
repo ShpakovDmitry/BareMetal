@@ -35,7 +35,7 @@ CXX_FLAGS += -Wshadow -Wlogical-op -Wsuggest-override -Wsuggest-final-types
 CXX_FLAGS += -Wsuggest-final-methods -pedantic
 LD_FLAGS := -T $(LINKER_SCRIPT_FILE) -Map $(BUILD_DIR)/$(TARGET).map --gc-sections
 LD_FLAGS += -nostartfiles -nolibc -nostdlib -nodefaultfiles
-OBJDUMP_FLAGS := --disassemble-all
+OBJDUMP_FLAGS := --disassemble-all -z
 OBJCOPY_FLAGS := -O ihex 
 OBJSIZE_FLAGS := 
 
