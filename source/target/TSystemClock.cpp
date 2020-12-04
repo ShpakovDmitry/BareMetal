@@ -15,13 +15,16 @@ static TSystemClockRegisters* const clock = \
 
 void TSystemClock::setDebounceTime(TCrystalOscillatorDebounce xo) {
     unsigned regVal;
+    unsigned const minRegVal = 0x01;
+    unsigned const maxRegVal = 0xff;
+    
     regVal = xo / 16; // magic because T_debounce = reg_val * 16
     // regVal should be in range 0x01..0xff. if not then clip value
-    if (regVal < 0x01) {
-        regVal = 0x01;
+    if (regVal < minRegVal) {
+        regVal = minRegVal;
     }
-    else if (regVal > 0xff) {
-        regVal = 0xff;
+    else if (regVal > maxRegVal) {
+        regVal = maxRegVal;
     }
     clock->HFXODEBOUNCE = regVal;
 }
