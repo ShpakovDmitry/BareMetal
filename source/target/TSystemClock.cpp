@@ -30,11 +30,18 @@ void TSystemClock::selectHighFreqSource(HighFreqSource src) {
     switch (src) {
         case HighFreqSource::HFXO:
             START_TASK(clock->TASKS_HFCLKSTART);
+            while ( isStartedHFXO() == false ) {;}
             break;
         case HighFreqSource::HFINT:
             START_TASK(clock->TASKS_HFCLKSTOP);
+            // after this MCU clock control system should
+            // fallback to internal high frequency oscillator
             break;
         default:    // never will get here
             break;
     }
+}
+
+bool TSystemClock::isStartedHFXO() {
+   return (clock->EVENTS_HFCLKSTARTED) ? true : false;
 }

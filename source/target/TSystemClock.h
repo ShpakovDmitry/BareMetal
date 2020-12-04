@@ -17,6 +17,7 @@ public:
     void setDebounceTime(TCrystalOscillatorDebounce xo = \
                                          TCrystalOscillatorDebounce::MAXIMAL);
     void selectHighFreqSource(HighFreqSource src);
+    bool isStartedHFXO();
     void selectLowFreqSource(LowFreqSource src);
     
     TSystemClock();
