@@ -43,12 +43,14 @@ clean:
 	rm -rf $(DIRS)
 	make -C ./source/application clean
 	make -C ./source/runtime clean
+	make -C ./source/target clean
 
 all: submake $(BUILD_DIR) link
 
 submake: 
 	make -C ./source/application
 	make -C ./source/runtime
+	make -C ./source/target
 
 flash: all
 	nrfjprog -f nrf52 --program build/firmware.hex --sectorerase
