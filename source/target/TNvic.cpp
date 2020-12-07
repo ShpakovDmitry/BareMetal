@@ -48,3 +48,13 @@ void TNvic::disable(TNvicIrq::TNvicIrq irq) {
 
     SET_BIT_HI(nvic->NVIC_ICER[irqReg], irqBit);
 }
+
+void TNvic::setPending(TNvicIrq::TNvicIrq irq) {
+    uint8_t irqReg, irqBit;
+
+    irqReg = getRegPosition(irq);
+    irqBit = getBitPosition(irq);
+
+    SET_BIT_HI(nvic->NVIC_ISPR[irqReg], irqBit);
+
+}
