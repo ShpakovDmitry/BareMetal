@@ -12,6 +12,7 @@ static TNvicRegisters* const nvic = \
                             reinterpret_cast<TNvicRegisters* >(NVIC_BASE_ADDR);
 
 #define SET_BIT_HI(reg, bit) ( (reg) |= (1 << (bit)) )
+#define GET_BIT(reg, bit)    ( (reg)  & (1 << (bit)) )
 
 void TNvic::enableGlobalIrq(void) {
     __asm__("CPSIE I");
@@ -65,4 +66,18 @@ void TNvic::clearPending(TNvicIrq::TNvicIrq irq) {
     irqBit = getBitPosition(irq);
 
     SET_BIT_HI(nvic->NVIC_ICPR[irqReg], irqBit);
+}
+
+bool TNvic::isPending(TNvicIrq::TNvicIrq irq) {
+    bool res = false;
+    uint8_t irqReg, irqBit;
+    
+    irqReg = getRegPosition(irq);
+    irqBit = getBitPosition(irq);
+    
+    if ( GET_BIT(nvic->NVIC_IABR[irqReg], irqBit) ) {
+        res = true;
+    }
+
+    return res;
 }
