@@ -8,6 +8,7 @@
 #define T_TARGET_NRF52840_H
 
 #include "TSystemClock.h"
+#include "TNvic.h"
 
 class TTargetNRF52840 {
 public:
@@ -17,6 +18,7 @@ public:
     ~TTargetNRF52840() { reset(); }
 private:
     TSystemClock _systemClock;
+    TNvic _nvic;
 };
 
 #endif  // T_TARGET_NRF52840_H
