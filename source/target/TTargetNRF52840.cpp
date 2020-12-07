@@ -14,10 +14,15 @@ void TTargetNRF52840::initSystemClock(void) {
     _systemClock.selectLowFreqSource(TSystemClock::LowFreqSource::LFXO);
 }
 
+void TTargetNRF52840::initSystemIRq(void) {
+    ;
+}
+
 void TTargetNRF52840::reset() {
     ;
 }
 
 TTargetNRF52840::TTargetNRF52840() {
     initSystemClock();
+    initSystemIRq();
 }

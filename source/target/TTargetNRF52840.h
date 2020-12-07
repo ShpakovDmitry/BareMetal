@@ -14,6 +14,7 @@ class TTargetNRF52840 {
 public:
     void reset();
     void initSystemClock();
+    void initSystemIRq();
     TTargetNRF52840();
     ~TTargetNRF52840() { reset(); }
 private:
