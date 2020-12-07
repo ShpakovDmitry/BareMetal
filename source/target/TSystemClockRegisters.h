@@ -50,4 +50,14 @@ typedef volatile struct __attribute__ ((packed)) {
     uint32_t LFRCMODE;              /* 0x5B4 LFRC mode configuration */
 } TSystemClockRegisters;
 
+namespace TSystemClockBitFields {
+    namespace LFCLKSRC {
+        enum SRC {
+            XTAL    = 0b01,
+            SYNTH   = 0b10,
+            RC      = 0b11
+        };
+    }
+}
+
 #endif  // T_SYSTEM_CLOCK_REGISTERS_H

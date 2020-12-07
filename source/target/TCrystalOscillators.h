@@ -6,8 +6,8 @@
 
 #ifndef T_CRYSTAL_OSCILLATORS_H
 #define T_CRYSTAL_OSCILLATORS_H
-
-enum TCrystalOscillatorDebounce {
+namespace TCrystalOscillators {
+    enum DebounceTime {
     MINIMAL = 16,
     TSX_3225 = 256,
     FA_20H = 256,
@@ -15,6 +15,7 @@ enum TCrystalOscillatorDebounce {
     NX1212AA = 1024,
     NX1210AB = 1024,
     MAXIMAL = 4080
-};
+    };
+}
 
 #endif  // T_CRYSTAL_OSCILLATORS_H

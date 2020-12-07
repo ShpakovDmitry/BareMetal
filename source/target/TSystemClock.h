@@ -12,13 +12,16 @@
 class TSystemClock {
 public:
     enum class HighFreqSource { HFINT, HFXO };
-    enum class LowFreqSource { LFXO, LFRC, SYNT };
+    enum class LowFreqSource { LFXO, LFRC, SYNTH };
 
-    void setDebounceTime(TCrystalOscillatorDebounce xo = \
-                                         TCrystalOscillatorDebounce::MAXIMAL);
+    void setDebounceTime(TCrystalOscillators::DebounceTime xo = \
+                                         TCrystalOscillators::MAXIMAL);
     void selectHighFreqSource(HighFreqSource src);
-    bool isStartedHFXO();
     void selectLowFreqSource(LowFreqSource src);
+    //TODO
+    // * add LFRC calibration
+    // * interrupt handlers
+    //
     
     TSystemClock();
     ~TSystemClock();
