@@ -82,3 +82,7 @@ void TSystemClock::selectLowFreqSource(LowFreqSource src) {
 TSystemClock::TSystemClock() {
     setDebounceTime(TCrystalOscillators::MAXIMAL);
 }
+
+TSystemClock::~TSystemClock() {
+    ;
+}

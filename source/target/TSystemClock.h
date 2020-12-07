@@ -25,9 +25,7 @@ public:
     
     TSystemClock();
     ~TSystemClock();
-
 private:
-
 };
 
 #endif  // T_SYSTEM_CLOCK_H
