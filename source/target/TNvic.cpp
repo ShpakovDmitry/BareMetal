@@ -39,3 +39,12 @@ void TNvic::enable(TNvicIrq::TNvicIrq irq) {
 
     SET_BIT_HI(nvic->NVIC_ISER[irqReg], irqBit);
 }
+
+void TNvic::disable(TNvicIrq::TNvicIrq irq) {
+    uint8_t irqReg, irqBit;
+
+    irqReg = getRegPosition(irq);
+    irqBit = getBitPosition(irq);
+
+    SET_BIT_HI(nvic->NVIC_ICER[irqReg], irqBit);
+}
