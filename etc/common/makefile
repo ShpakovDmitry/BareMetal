@@ -21,8 +21,8 @@ CXX_SRC_FILES := $(wildcard $(SOURCE_DIR)/*.cpp)
 CXX_OBJ_FILES := $(CXX_SRC_FILES:$(SOURCE_DIR)/%.cpp=$(OBJECT_DIR)/%.o)
 
 CXX_FLAGS := -c -Wall -Werror -mcpu=$(MCU) -mthumb -Os -std=c++17
-CXX_FLAGS += -idirafter ./include -fdata-sections -ffunction-sections
-CXX_FLAGS += -ffreestanding 
+CXX_FLAGS += -idirafter ../../source -fdata-sections -ffunction-sections
+CXX_FLAGS += -ffreestanding -idirafter ../../include
 CXX_FLAGS += -fms-extensions -fno-exceptions -fno-rtti -fno-use-cxa-atexit
 CXX_FLAGS += -fno-threadsafe-statics -fstrict-volatile-bitfields -Wextra
 CXX_FLAGS += -Wcast-align -Wconversion -Wsign-conversion -Wold-style-cast
