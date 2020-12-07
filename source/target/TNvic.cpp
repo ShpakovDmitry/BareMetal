@@ -32,6 +32,25 @@ static uint8_t getBitPosition(TNvicIrq::TNvicIrq irq) {
     return static_cast<uint8_t>(irq) % BITS_IN_ARM_WORD;
 }
 
+static const uint8_t MSB_PRIORITY = 3;    // in IPR 3 MSB matters
+static const unsigned BITS_IN_BYTE = 8;
+static const uint8_t MAX_PRIORITY = 7;
+static const uint8_t MIN_PRIORITY = 0;
+
+static bool isCorrectPriority(uint8_t priority) {
+    bool res = false;
+
+    if ( priority <= MAX_PRIORITY ) {
+        res = true;
+    }
+
+    return res;
+}
+
+static uint8_t getPriorityValue(uint8_t priority) {
+    return ( priority << (BITS_IN_BYTE - MSB_PRIORITY) );
+}
+
 void TNvic::enable(TNvicIrq::TNvicIrq irq) {
     uint8_t irqReg, irqBit;
 
@@ -80,4 +99,15 @@ bool TNvic::isPending(TNvicIrq::TNvicIrq irq) {
     }
 
     return res;
+}
+
+void TNvic::setPriority(TNvicIrq::TNvicIrq irq, uint8_t priority) {
+    if ( !isCorrectPriority(priority) ) {
+        return;
+    }
+
+    uint8_t priorityVal;
+    priorityVal = getPriorityValue(priority);
+
+    nvic->NVIC_IPR[irq] = priorityVal;
 }
