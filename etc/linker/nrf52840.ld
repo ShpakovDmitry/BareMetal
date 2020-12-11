@@ -9,6 +9,7 @@ SECTIONS {
         KEEP(*(.stack))
         KEEP(*(.exception_vectors))
         KEEP(*(.isr_vectors))
+        *(.text)
         *(.text*)
         KEEP(*(.rodata*))
     } > FLASH
@@ -16,18 +17,21 @@ SECTIONS {
     .preinit_array ALIGN(4) : {
         __preinit_array_start = .;
         KEEP(*(.preinit_array))
+        KEEP(*(.preinit_array*))
         __preinit_array_end = .;
     } > FLASH
 
     .init_array ALIGN(4) : {
         __init_array_start = .;
         KEEP(*(.init_array))
+        KEEP(*(.init_array*))
         __init_array_end = .;
     } > FLASH
 
     .fini_array ALIGN(4) : {
         __fini_array_start = .;
         KEEP(*(.fini_array))
+        KEEP(*(.fini_array*))
         __fini_array_end = .;
     } > FLASH
 
@@ -40,6 +44,7 @@ SECTIONS {
 
     .data ALIGN(4) : {
         __data_start = .;
+        *(.data)
         *(.data*)
         . = ALIGN(4);
         __data_end = .;
@@ -47,6 +52,7 @@ SECTIONS {
 
     .bss ALIGN(4) (NOLOAD) : {
         __bss_start = .;
+        *(.bss)
         *(.bss*)
         . = ALIGN(4);
         __bss_end = .;
