@@ -38,3 +38,13 @@ bool TSysTick::setReloadPeriod(uint32_t periodMicroSec) {
 
     return true;
 }
+
+bool TSysTick::setCurrentValue(uint32_t value) {
+    if ( value > MAX_SYSTICK_REG_VAL ) {
+        return false;
+    }
+
+    sysTick->SYST_CVR = value;
+
+    return true;
+}

@@ -12,6 +12,7 @@
 class TSysTick {
 public:
     bool setReloadPeriod(uint32_t periodMicroSec);
+    bool setCurrentValue(uint32_t value);
 private:
 };
 
