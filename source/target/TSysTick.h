@@ -15,6 +15,7 @@ public:
     bool setCurrentValue(uint32_t value);
     void enable(void);
     void disable(void);
+    bool isEnabled(void);
 private:
 };
 

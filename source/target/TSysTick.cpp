@@ -86,3 +86,7 @@ void TSysTick::disable(void) {
     sysTick->SYST_CSR &= 
         ~static_cast<uint32_t>((1 << TSysTickBitFields::SYST_CSR::ENABLE));
 }
+
+bool TSysTick::isEnabled(void) {
+    return (sysTick->SYST_CSR & static_cast<uint32_t>((1 << TSysTickBitFields::SYST_CSR::ENABLE))) ? true : false;
+}
