@@ -71,7 +71,7 @@ void callFiniArray(void) {
     }
 }
 
-void RESET_Handler() {
+extern "C" void RESET_Handler() {
     copyDataSection();
     copyBssSection();
     fillHeap();
