@@ -8,6 +8,8 @@
 #include "TSysTick.h"
 
 static const uint32_t SYSTICK_BASE_ADDRESS = 0xE000E000;
+static const uint32_t SYSTEM_FREQ = 64'000'000;
+static const uint32_t MAX_SYSTICK_REG_VAL = 0x00FFFFFF;
 
 typedef volatile struct __attribute__((packed)) {
     uint32_t reserved0[4];  /* 0x000 - 0x00C reserved*/
@@ -20,3 +22,19 @@ typedef volatile struct __attribute__((packed)) {
 static TSysTickRegister* const sysTick = reinterpret_cast<TSysTickRegister*>(SYSTICK_BASE_ADDRESS);
 
 
+bool TSysTick::setReloadPeriod(uint32_t periodMicroSec) {
+    constexpr static uint32_t TICKS_PER_US = (SYSTEM_FREQ / 1'000'000);
+    constexpr static uint32_t MAX_SYSTICK_PERIOD_US = 
+        (MAX_SYSTICK_REG_VAL + 1) / TICKS_PER_US;
+    
+    if ( periodMicroSec == 0 || periodMicroSec > MAX_SYSTICK_PERIOD_US ) {
+        return false;
+    }
+
+    uint32_t reloadRegisterVal;
+    reloadRegisterVal = periodMicroSec * TICKS_PER_US - 1;
+
+    sysTick->SYST_RVR = reloadRegisterVal;
+
+    return true;
+}
