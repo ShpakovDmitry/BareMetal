@@ -78,5 +78,11 @@ bool TSysTick::setCurrentValue(uint32_t value) {
 }
 
 void TSysTick::enable(void) {
-    sysTick->SYST_CSR |= (1 << TSysTickBitFields::SYST_CSR::ENABLE);
+    sysTick->SYST_CSR |= 
+        static_cast<uint32_t>((1 << TSysTickBitFields::SYST_CSR::ENABLE));
+}
+
+void TSysTick::disable(void) {
+    sysTick->SYST_CSR &= 
+        ~static_cast<uint32_t>((1 << TSysTickBitFields::SYST_CSR::ENABLE));
 }
