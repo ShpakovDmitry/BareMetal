@@ -19,6 +19,34 @@ typedef volatile struct __attribute__((packed)) {
     uint32_t SYST_CALIB;    /* 0x01C - SysTick calibration value register */
 } TSysTickRegister;
 
+namespace TSysTickBitFields {
+    namespace SYST_CSR {
+        enum {
+            COUNTFLAG = 16,
+            CLKSOURCE = 2,
+            TICKINT = 1,
+            ENABLE = 0
+        };
+    }
+    namespace SYST_RVR {
+        enum {
+            RELOAD = 0b0000'1111'1111'1111
+        };
+    }
+    namespace SYST_CVR {
+        enum {
+            CURRENT = 0b0000'1111'1111'1111
+        };
+    }
+    namespace SYST_CALIB {
+        enum {
+            NOREF = 31,
+            SKEW = 30,
+            TENMS = 0b0000'1111'1111'1111
+        };
+    }
+}
+
 static TSysTickRegister* const sysTick = reinterpret_cast<TSysTickRegister*>(SYSTICK_BASE_ADDRESS);
 
 
