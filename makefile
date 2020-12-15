@@ -28,7 +28,7 @@ AS_OBJ_FILES := $(AS_SRC_FILES:$(SOURCE_DIR)/%.s=$(OBJECT_DIR)/%.o)
 
 CC_FLAGS := -c -Wall -Werror -idirafter ./include -mmcu=$(MCU)
 CC_FLAGS += -nostartfiles -nodefaultlibs -nostdlib -Os
-CC_FLAGS += -fdata-sections -ffunction-sections
+CC_FLAGS += -fdata-sections -ffunction-sections -nolibc -nostdinc
 CC_FLAGS += -ffreestanding
 CC_FLAGS += -fms-extensions -fno-exceptions
 CC_FLAGS += -fstrict-volatile-bitfields -Wextra
