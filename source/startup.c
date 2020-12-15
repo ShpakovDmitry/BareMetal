@@ -9,6 +9,7 @@ extern uint16_t __bss_end;
 extern uint16_t __heap_start;
 
 extern void main(void);
+extern void __stop();
 
 void copyDataSection(void) {
     uint16_t *src, *dst;
@@ -41,7 +42,5 @@ void fillHeap(uint16_t fillVal) {
     copyBssSection();
     fillHeap(0xC0DE);
     main();
-    while (true) {
-        ;
-    }
+    __stop();
 }
