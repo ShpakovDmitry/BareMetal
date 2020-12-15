@@ -26,18 +26,17 @@ AS_SRC_FILES := $(wildcard $(SOURCE_DIR)/*.s)
 CC_OBJ_FILES := $(CC_SRC_FILES:$(SOURCE_DIR)/%.c=$(OBJECT_DIR)/%.o)
 AS_OBJ_FILES := $(AS_SRC_FILES:$(SOURCE_DIR)/%.s=$(OBJECT_DIR)/%.o)
 
-CC_FLAGS := -c -Wall -Werror -idirafter ./include -mmcu=$(MCU)
-CC_FLAGS += -nostartfiles -nodefaultlibs -nostdlib -Os
-CC_FLAGS += -fdata-sections -ffunction-sections -nolibc -nostdinc
-CC_FLAGS += -ffreestanding
-CC_FLAGS += -fms-extensions -fno-exceptions
+CC_FLAGS := -c -Wall -Werror -idirafter ./include -mmcu=$(MCU) -Os
+CC_FLAGS += -nodefaultlibs -fdata-sections -ffunction-sections -nolibc
+CC_FLAGS += -nostdinc -ffreestanding -fms-extensions -fno-exceptions
 CC_FLAGS += -fstrict-volatile-bitfields -Wextra
-CC_FLAGS += -Wcast-align -Wconversion -Wsign-conversion
-CC_FLAGS += -Wshadow -Wlogical-op -Wsuggest-final-types
-CC_FLAGS += -Wsuggest-final-methods -pedantic
+CC_FLAGS += -Wcast-align -Wconversion -Wsign-conversion -Wsuggest-final-methods
+CC_FLAGS += -Wshadow -Wlogical-op -Wsuggest-final-types -pedantic
 AS_FLAGS := -mmcu=$(MCU_ARCH) -I ./include
 LD_FLAGS := -T $(LINKER_SCRIPT_FILE) -Map $(BUILD_DIR)/$(TARGET).map
-OBJDUMP_FLAGS := --disassemble-all -m $(MCU_ARCH) --private=mem-usage $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).s
+LD_FLAGS += -nostartfiles -nolibc -nostdlib -nodefaultfiles
+OBJDUMP_FLAGS := --disassemble-all -m $(MCU_ARCH) --private=mem-usage
+OBJDUMP_FLAGS += $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).s
 OBJCOPY_FLAGS := -O ihex $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex
 OBJSIZE_FLAGS := 
 
