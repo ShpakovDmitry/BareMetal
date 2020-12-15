@@ -104,3 +104,26 @@ void TSysTick::disableInterrupt(void) {
 bool TSysTick::isInterruptEnabled(void) {
     return (sysTick->SYST_CSR & static_cast<uint32_t>((1 << TSysTickBits::SYST_CSR::TICKINT))) ? true : false;
 }
+
+static void dummy(void) {
+    ;
+}
+
+void (* handlerCallback)(void) = dummy;
+
+void TSysTick::setInterruptCallback(void (*cb)(void)) {
+    if (cb == nullptr) {
+        return;
+    }
+    handlerCallback = cb;
+}
+
+extern "C" __attribute__((isr)) void SYSTICK_Handler(void) {
+    sysTick->SYST_CSR &= 
+        ~static_cast<uint32_t>((1 << TSysTickBits::SYST_CSR::TICKINT));
+    
+    handlerCallback();
+    
+    sysTick->SYST_CSR |=
+        static_cast<uint32_t>( (1 << TSysTickBits::SYST_CSR::TICKINT) );
+}

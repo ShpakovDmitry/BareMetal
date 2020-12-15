@@ -19,6 +19,7 @@ public:
     void enableInterrupt(void);
     void disableInterrupt(void);
     bool isInterruptEnabled(void);
+    void setInterruptCallback(void (*cb)(void));
 private:
 };
 
