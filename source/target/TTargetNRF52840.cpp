@@ -18,6 +18,13 @@ void TTargetNRF52840::initSystemIRq(void) {
     ;
 }
 
+void TTargetNRF52840::initSysTick() {
+    _sysTick.setReloadPeriod(1000);
+    _sysTick.setCurrentValue(0);
+    _sysTick.enable();
+    _sysTick.enableInterrupt();
+}
+
 void TTargetNRF52840::reset() {
     ;
 }
@@ -25,4 +32,5 @@ void TTargetNRF52840::reset() {
 TTargetNRF52840::TTargetNRF52840() {
     initSystemClock();
     initSystemIRq();
+    initSysTick();
 }
