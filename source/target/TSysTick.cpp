@@ -19,7 +19,7 @@ typedef volatile struct __attribute__((packed)) {
     uint32_t SYST_CALIB;    /* 0x01C - SysTick calibration value register */
 } TSysTickRegister;
 
-namespace TSysTickBitFields {
+namespace TSysTickBits {
     namespace SYST_CSR {
         enum {
             COUNTFLAG = 16,
@@ -79,14 +79,14 @@ bool TSysTick::setCurrentValue(uint32_t value) {
 
 void TSysTick::enable(void) {
     sysTick->SYST_CSR |= 
-        static_cast<uint32_t>((1 << TSysTickBitFields::SYST_CSR::ENABLE));
+        static_cast<uint32_t>((1 << TSysTickBits::SYST_CSR::ENABLE));
 }
 
 void TSysTick::disable(void) {
     sysTick->SYST_CSR &= 
-        ~static_cast<uint32_t>((1 << TSysTickBitFields::SYST_CSR::ENABLE));
+        ~static_cast<uint32_t>((1 << TSysTickBits::SYST_CSR::ENABLE));
 }
 
 bool TSysTick::isEnabled(void) {
-    return (sysTick->SYST_CSR & static_cast<uint32_t>((1 << TSysTickBitFields::SYST_CSR::ENABLE))) ? true : false;
+    return (sysTick->SYST_CSR & static_cast<uint32_t>((1 << TSysTickBits::SYST_CSR::ENABLE))) ? true : false;
 }
