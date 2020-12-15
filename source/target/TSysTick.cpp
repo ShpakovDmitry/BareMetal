@@ -90,3 +90,8 @@ void TSysTick::disable(void) {
 bool TSysTick::isEnabled(void) {
     return (sysTick->SYST_CSR & static_cast<uint32_t>((1 << TSysTickBits::SYST_CSR::ENABLE))) ? true : false;
 }
+
+void TSysTick::enableInterrupt(void) {
+    sysTick->SYST_CSR |=
+        static_cast<uint32_t>( (1 << TSysTickBits::SYST_CSR::TICKINT) );
+}
