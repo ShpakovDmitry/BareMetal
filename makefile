@@ -12,6 +12,7 @@ AS := $(ARCH)-as
 LD := $(ARCH)-ld
 OBJDUMP := $(ARCH)-objdump
 OBJCOPY := $(ARCH)-objcopy
+OBJSIZE := $(ARCH)-size
 
 SOURCE_DIR := source
 BUILD_DIR := build
@@ -34,11 +35,12 @@ CC_FLAGS += -fstrict-volatile-bitfields -Wextra
 CC_FLAGS += -Wcast-align -Wconversion -Wsign-conversion
 CC_FLAGS += -Wshadow -Wlogical-op -Wsuggest-final-types
 CC_FLAGS += -Wsuggest-final-methods -pedantic
-
 AS_FLAGS := -mmcu=$(MCU_ARCH) -I ./include
 LD_FLAGS := -T $(LINKER_SCRIPT_FILE) -Map $(BUILD_DIR)/$(TARGET).map
 OBJDUMP_FLAGS := --disassemble-all -m $(MCU_ARCH) --private=mem-usage $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).s
 OBJCOPY_FLAGS := -O ihex $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex
+OBJSIZE_FLAGS := 
+
 
 
 $(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.c
@@ -51,6 +53,8 @@ $(BUILD_DIR)/firmware.elf: $(AS_OBJ_FILES) $(CC_OBJ_FILES)
 	$(LD) $(LD_FLAGS) $^ -o $@
 	$(OBJDUMP) $(OBJDUMP_FLAGS)
 	$(OBJCOPY) $(OBJCOPY_FLAGS)
+	$(OBJSIZE) $(OBJSIZE_FLAGS) $(BUILD_DIR)/$(TARGET).elf
+
 $(BUILD_DIR):
 	mkdir --parents $(DIRS)
 
