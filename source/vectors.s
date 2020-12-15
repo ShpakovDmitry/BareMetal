@@ -1,5 +1,3 @@
-.include "attiny2313def.inc"
-
 .section .vectors,"ax",@progbits
 .global __vectors
 __vectors:
@@ -25,6 +23,7 @@ __vectors:
 
 
 .section .text,"ax",@progbits
+.equ SPL, 0x3d                      ;stack pointer register low byte
 .global RESET_Handler
 RESET_Handler:
     eor r1, r1                      ;set r1 reg as zero, this is for convention
