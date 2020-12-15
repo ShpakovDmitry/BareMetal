@@ -100,3 +100,7 @@ void TSysTick::disableInterrupt(void) {
     sysTick->SYST_CSR &= 
         ~static_cast<uint32_t>((1 << TSysTickBits::SYST_CSR::TICKINT));
 }
+
+bool TSysTick::isInterruptEnabled(void) {
+    return (sysTick->SYST_CSR & static_cast<uint32_t>((1 << TSysTickBits::SYST_CSR::TICKINT))) ? true : false;
+}

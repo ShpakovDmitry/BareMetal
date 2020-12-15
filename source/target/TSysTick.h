@@ -18,6 +18,7 @@ public:
     bool isEnabled(void);
     void enableInterrupt(void);
     void disableInterrupt(void);
+    bool isInterruptEnabled(void);
 private:
 };
 
