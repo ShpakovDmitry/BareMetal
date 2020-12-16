@@ -31,7 +31,10 @@ void copyBssSection(void) {
 void fillHeap(uint16_t fillVal) {
     uint16_t *dst, *spl;
     dst = &__heap_start;
-    __asm__("in %0, 0x3d\n" : "=r" (spl));
+    __asm__ volatile(
+            "in  %A0, 0x3d\n" "\n\t"
+            "ldi %B0, 0x00\n" "\n\t"
+            : "=r" (spl));
     while (dst < spl) {
         *(dst++) = fillVal;
     }
