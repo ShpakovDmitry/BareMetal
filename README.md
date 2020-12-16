@@ -5,5 +5,5 @@ the uses of any libraries.
 #### Description
 
 ###### Microcontroller startup
-When the AVR microcontroller leaves `RESET` state instruction, it starts
-to execute instruction at address `0x0000`.
+When the AVR microcontroller leaves `RESET` state, it starts to execute
+instruction at address `0x0000`.
