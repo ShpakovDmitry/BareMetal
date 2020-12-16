@@ -3,6 +3,38 @@ AVR25 architecture ATtiny2313 microcontroller bare metal bring-up without
 the uses of any libraries.
 All source code build using GNU GCC toolchain.
 
+#### Cloning the project
+To clone the project to your local directory, run the following:
+```bash
+git clone https://github.com/ShpakovDmitry/AVR25BareMetal.git
+```
+
+#### Toolchain setup
+To build the project following tools required:
+* avr-gcc
+* avr-binutils
+* avr-libc
+* make
+* avrdude
+To get them, run the following on your Linux machine:
+```bash
+# Ubuntu, Debian
+sudo apt-get update
+sudo apt-get install avr-gcc avr-binutils avr-libc avrdude
+# Arch
+sudo pacman -S avr-gcc avr-binutils avr-libc avrdude
+```
+
+#### Project build
+To build project run the following:
+```bash
+make
+```
+To clean build files run:
+```bash
+make clean
+```
+
 #### Description.
 ##### Microcontroller startup.
 When the AVR microcontroller leaves `RESET` state, it starts to execute
@@ -12,7 +44,7 @@ procedure. In init routine following should be done:
 * zero `r1` register. This is for compiler convention (valid for GCC, should be
 checked on other compilers)
 * load stack address to stack pointer register `SPL`.
-* copy `.data` section to `SRAM`
+* copy `.data` section from `FLASH` to `SRAM`
 * zero `.bss` section in `SRAM`
 * optionally fill `heap` with init value
 * call `main()` routine
