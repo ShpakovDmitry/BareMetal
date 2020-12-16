@@ -58,6 +58,7 @@ To zero `r1` register exclusive OR instruction could be used:
 ```asm
 eor r1, r1  ;set r1 reg as zero, this is for convention
 ```
+###### Load stack address to stack pointer register `SPL`.
 
 
 
