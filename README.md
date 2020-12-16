@@ -1,5 +1,9 @@
 ### AVR25BareMetal
-AVR25 architecture ATtiny2313 microcontroller bare metal bring-up without the uses of any libraries.
+AVR25 architecture ATtiny2313 microcontroller bare metal bring-up without
+the uses of any libraries.
 
 #### Description
-//TODO
+
+###### Microcontroller startup
+When the AVR microcontroller leaves `RESET` state instruction, it starts
+to execute instruction at address `0x0000`.
