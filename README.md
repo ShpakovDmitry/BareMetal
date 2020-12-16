@@ -16,6 +16,7 @@ To build the project following tools required:
 * avr-libc
 * make
 * avrdude
+
 To get them, run the following on your Linux machine:
 ```bash
 # Ubuntu, Debian
