@@ -59,7 +59,15 @@ To zero `r1` register exclusive OR instruction could be used:
 eor r1, r1  ;set r1 reg as zero, this is for convention
 ```
 ###### Load stack address to stack pointer register `SPL`.
-
+When any routine is called by `rcall, icall` instruction or return from routine
+with `ret, reti` instruction is made, stack is used to store/restore return
+address. So, it is crucial to set the initial stack poiter value prior to any
+such instruction call. Typically stack pointer points to `SRAM` end. This is 
+done in the following way:
+```asm
+ldi r20, lo8(__stacktop - 1)    ;stack setup
+out SPL, r20
+```
 
 
 
