@@ -26,7 +26,7 @@ AS_SRC_FILES := $(wildcard $(SOURCE_DIR)/*.s)
 CC_OBJ_FILES := $(CC_SRC_FILES:$(SOURCE_DIR)/%.c=$(OBJECT_DIR)/%.o)
 AS_OBJ_FILES := $(AS_SRC_FILES:$(SOURCE_DIR)/%.s=$(OBJECT_DIR)/%.o)
 
-CC_FLAGS := -c -Wall -Werror -idirafter ./include -mmcu=$(MCU) -Os
+CC_FLAGS := -c -Wall -Werror -idirafter ./include -mmcu=$(MCU) -Os -std=c11
 CC_FLAGS += -nodefaultlibs -fdata-sections -ffunction-sections -nolibc
 CC_FLAGS += -nostdinc -ffreestanding -fms-extensions -fno-exceptions
 CC_FLAGS += -fstrict-volatile-bitfields -Wextra
