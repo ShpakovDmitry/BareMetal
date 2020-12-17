@@ -162,7 +162,7 @@ void fillHeap(uint16_t fillVal) {
     }
 }
 
- void _initCRT() {
+void _initCRT() {
     copyDataSection();
     copyBssSection();
     fillHeap(0xC0DE);
@@ -307,11 +307,32 @@ and if there is no fill pattern found then this may indicate to stack
 and data collision. This condition may lead to unpredictable microcontroller
 functioning.
 
+###### Call `main()` routine
+Here is simple call `main()` routine declared as follows:
+```c
+void main(void);
+```
 
-
+###### Summary
+So, summary this looks the following:
+```c
+void _initCRT() {
+    copyDataSection();
+    copyBssSection();
+    fillHeap(0xC0DE);
+    main();
+    __stop();
+}
+```
+After `main()`, there is `__stop()`, which is infinite loop, because if
+`main()` return we do not want that microcontroller executes any instruction
+after `main()`.
 
 ###### Interrupt Vector Table
-Also starting from address `0x0000` interrupt vector table is located.
+In `source/isr.c` file there are declared interrupt service routines (ISR)
+with weak reference to `__stop()` routine. Thats means that if no ISR handler
+defined in any translation unit then `__stop()` routine will be used instead.
+All ATtiny2313 ISR vectors are the following:
 
 | Vector # | Address | Source | Definition                                    |
 |----------|---------|--------|-----------------------------------------------|
