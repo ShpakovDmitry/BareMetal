@@ -86,6 +86,9 @@ RESET_Handler:
     out SPL, r20
     rjmp _initCRT
 ```
+Here are located two sections:
+* `.vectors` - interrupt vector table located at `0x0000` in `FLASH` memory.
+* `.text` - executable code section which goes to `FLASH` memory.
 
 ###### Zero `r1` register.
 When the C source code is compiled into microcontroller assembly instruction
