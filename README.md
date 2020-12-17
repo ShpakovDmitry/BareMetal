@@ -191,7 +191,11 @@ Because of microcontroller **Harward** architecture( data and code are
 separated ) it is needed to copy initialized data from `FLASH` to `SRAM`.
 Because when we use, for example:
 ```c
-unsigned myVar = 42;
+unsigned ourVar = 42;                   // at .data section
+
+void main() {
+    static unsigned myVar = 0xC0DE;     // at .data section
+}
 
 // do smth with myVar
 ```
@@ -199,10 +203,43 @@ we need to somehow store `42` value in microcontroller, keeping in mind that
 after microcontroller reset usually there is a garbage in `SRAM`. This is
 done by writing this value to `FLASH` memory and then copying it to `SRAM`
 memory.
+First of all we need to know the load address of `.data` section in `FLASH`,
+it means where it is located in `FLASH` physical address. Then we need to
+know what is `.data` section address in `SRAM`. All this addresses are defined
+in linker script file(see below). When we know these addresses, we simply copy
+data from `FLASH` to `SRAM`
+```c
+void copyDataSection(void) {
+    uint16_t *src, *dst;
+    src = &__data_load;
+    dst = &__data_start;
+    while (dst < &__data_end) {
+        *(dst++) = *(src++);
+    }
+}
+```
+###### Zero `.bss` section in `SRAM`
+Similarly as with `.data` section we do with `.bss` section. The difference is
+that in `.bss` section always are located data initialized with zero and
+uninitialized global data,i.e.:
+```c
+unsigned ourVar;            // uninitialized global variable;
 
-
-
-
+void main() {
+    static unsigned myVar;  // static data always is initialized with 0
+}
+```
+The zeroing process is do in the following way:
+```c
+void copyBssSection(void) {
+    uint16_t *src;
+    src = &__bss_start;
+    while (src < &__bss_end) {
+        *(src++) = 0;
+    }
+}
+```
+The `__bss_start` and `__bss_end` are defined in linker script file(see below).
 
 ###### Interrupt Vector Table
 Also starting from address `0x0000` interrupt vector table is located.
