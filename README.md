@@ -302,8 +302,10 @@ some data used in source code
 
 - POSSIBLE STACK AND DATA COLLISION!
 ```
-
-
+Possible stack collision could be detected by looking heap fill value,
+and if there is no fill pattern found then this may indicate to stack
+and data collision. This condition may lead to unpredictable microcontroller
+functioning.
 
 
 
