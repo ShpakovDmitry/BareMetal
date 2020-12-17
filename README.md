@@ -117,6 +117,78 @@ When stack is set it is possible to call any C function.
 rjmp _initCRT   ; runtime init written in C
 ```
 
+The next initialization actions are written in C and are located in
+`source/startup.c` file. Here is source code:
+```c
+#include <stdint.h>
+#include <stdbool.h>
+
+extern uint16_t __data_start;
+extern uint16_t __data_end;
+extern uint16_t __data_load;
+extern uint16_t __bss_start;
+extern uint16_t __bss_end;
+extern uint16_t __heap_start;
+
+extern void main(void);
+extern void __stop();
+
+void copyDataSection(void) {
+    uint16_t *src, *dst;
+    src = &__data_load;
+    dst = &__data_start;
+    while (dst < &__data_end) {
+        *(dst++) = *(src++);
+    }
+}
+
+void copyBssSection(void) {
+    uint16_t *src;
+    src = &__bss_start;
+    while (src < &__bss_end) {
+        *(src++) = 0;
+    }
+}
+
+void fillHeap(uint16_t fillVal) {
+    uint16_t *dst, *spl;
+    dst = &__heap_start;
+    __asm__ volatile(
+            "in  %A0, 0x3d\n" "\n\t"
+            "ldi %B0, 0x00\n" "\n\t"
+            : "=r" (spl));
+    while (dst < spl) {
+        *(dst++) = fillVal;
+    }
+}
+
+ void _initCRT() {
+    copyDataSection();
+    copyBssSection();
+    fillHeap(0xC0DE);
+    main();
+    __stop();
+}
+```
+
+###### Copy `.data` section from `FLASH` to `SRAM`
+Because of microcontroller **Harward** architecture( data and code are
+separated ) it is needed to copy initialized data from `FLASH` to `SRAM`.
+Because when we use, for example:
+```c
+unsigned myVar = 42;
+
+// do smth with myVar
+```
+we need to somehow store `42` value in microcontroller, keeping in mind that
+after microcontroller reset usually there is a garbage in `SRAM`. This is
+done by writing this value to `FLASH` memory and then copying it to `SRAM`
+memory.
+
+
+
+
+
 
 ###### Interrupt Vector Table
 Also starting from address `0x0000` interrupt vector table is located.
