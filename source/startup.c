@@ -1,18 +1,15 @@
-#include <stdint.h>
-#include <stdbool.h>
-
-extern uint16_t __data_start;
-extern uint16_t __data_end;
-extern uint16_t __data_load;
-extern uint16_t __bss_start;
-extern uint16_t __bss_end;
-extern uint16_t __heap_start;
+extern __UINT16_TYPE__ __data_start;
+extern __UINT16_TYPE__ __data_end;
+extern __UINT16_TYPE__ __data_load;
+extern __UINT16_TYPE__ __bss_start;
+extern __UINT16_TYPE__ __bss_end;
+extern __UINT16_TYPE__ __heap_start;
 
 extern void main(void);
 extern void __stop();
 
 void copyDataSection(void) {
-    uint16_t *src, *dst;
+    __UINT16_TYPE__ *src, *dst;
     src = &__data_load;
     dst = &__data_start;
     while (dst < &__data_end) {
@@ -21,15 +18,15 @@ void copyDataSection(void) {
 }
 
 void copyBssSection(void) {
-    uint16_t *src;
+    __UINT16_TYPE__ *src;
     src = &__bss_start;
     while (src < &__bss_end) {
         *(src++) = 0;
     }
 }
 
-void fillHeap(uint16_t fillVal) {
-    uint16_t *dst, *spl;
+void fillHeap(__UINT16_TYPE__ fillVal) {
+    __UINT16_TYPE__ *dst, *spl;
     dst = &__heap_start;
     __asm__ volatile(
             "in  %A0, 0x3d\n" "\n\t"

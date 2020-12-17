@@ -1,7 +1,5 @@
-#include <stdbool.h>
-
 void __stop(void)  {
-    while (true) {;}
+    while (1) {;}
 }
 
 void INT0_Handler(void)           __attribute__((weak, alias("__stop")));
