@@ -241,6 +241,55 @@ void copyBssSection(void) {
 ```
 The `__bss_start` and `__bss_end` are defined in linker script file(see below).
 
+###### Optionally fill `heap` with init value
+This is optional and may serve several purposes. One of them could be for
+dynamic memory allocation purposes, the other could be for debug purposes to
+detect stack overflow conditions.\
+The function:
+```c
+void fillHeap(uint16_t fillVal) {
+    uint16_t *dst, *spl;
+    dst = &__heap_start;
+    __asm__ volatile(
+            "in  %A0, 0x3d\n" "\n\t"
+            "ldi %B0, 0x00\n" "\n\t"
+            : "=r" (spl));
+    while (dst < spl) {
+        *(dst++) = fillVal;
+    }
+}
+```
+does the following:
+* get the heap start address(heap starts after `.data` and `.bss` sections).
+* get stack top address by reading stack pointer register `SPL (0x3d)`.
+* fill `SRAM` from `__heap_start` to stack top with any value. Here `0xC0DE` is
+used.
+
+When debbuging for stack overflow memory dump could be the following:
+```diff
+some data used in source code                      unused data
+            |                                            |
+      +-----+-----+--------------------------------------+
+      |           |                                      |
+0x0060 12 34 23 A3 DE C0 DE C0 DE C0 DE C0 DE C0 DE C0   |
+0x0070 DE C0 DE C0 DE C0 DE C0 DE C0 DE C0 DE C0 DE C0   |
+0x0080 DE C0 DE C0 DE C0 DE C0 DE C0 DE C0 DE C0 DE C0   |
+......................................................   |
+0x00D0 DE C0 DE C0 DE C0 DE C0 DE C0 DE C0 00 42 00 1A
+                                          |           |
+                                          +-----------+
+                                                |
+                                    data stored on stack
+                              (return addresses or stack data)
+
++ NO STACK AND DATA COLLISION!
+```
+
+
+
+
+
+
 ###### Interrupt Vector Table
 Also starting from address `0x0000` interrupt vector table is located.
 
