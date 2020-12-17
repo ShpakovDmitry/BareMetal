@@ -68,7 +68,8 @@ done in the following way:
 ldi r20, lo8(__stacktop - 1)    ;stack setup
 out SPL, r20
 ```
-
+Here `__stacktop` is define from linker file(see below). Minus one because
+stack push is post-decrement. 
 
 
 ###### Interrupt Vector Table
