@@ -171,6 +171,21 @@ void fillHeap(uint16_t fillVal) {
 }
 ```
 
+And so after executing instruction
+```asm
+rjmp _initCRT   ; runtime init written in C
+```
+is called
+```c
+void _initCRT() {
+   copyDataSection();
+   copyBssSection();
+   fillHeap(0xC0DE);
+   main();
+   __stop();
+}
+```
+
 ###### Copy `.data` section from `FLASH` to `SRAM`
 Because of microcontroller **Harward** architecture( data and code are
 separated ) it is needed to copy initialized data from `FLASH` to `SRAM`.
@@ -184,7 +199,6 @@ we need to somehow store `42` value in microcontroller, keeping in mind that
 after microcontroller reset usually there is a garbage in `SRAM`. This is
 done by writing this value to `FLASH` memory and then copying it to `SRAM`
 memory.
-
 
 
 
