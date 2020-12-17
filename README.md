@@ -284,6 +284,24 @@ some data used in source code                      unused data
 
 + NO STACK AND DATA COLLISION!
 ```
+```diff
+some data used in source code                      
+            |                                           
+      +-----+-------------------->>----------------------+
+      |                                                  |
+0x0060 12 34 23 A3 34 76 64 50 98 23 87 63 09 40 85 40   |
+0x0070 23 48 75 23 27 29 28 59 87 59 21 45 81 34 19 23   |
+0x0080 28 45 12 59 83 45 72 18 32 58 26 51 64 52 37 63   |
+......................................................   |
+0x00D0 12 73 58 32 45 12 34 41 73 51 27 44 00 42 00 1A
+                                                      |
+                                        <-------------+
+                                                |
+                                    data stored on stack
+                              (return addresses or stack data)
+
+- POSSIBLE STACK AND DATA COLLISION!
+```
 
 
 
