@@ -11,8 +11,8 @@
 static TNvicRegisters* const nvic = \
                             reinterpret_cast<TNvicRegisters* >(NVIC_BASE_ADDR);
 
-#define SET_BIT_HI(reg, bit) ( (reg) |= (1 << (bit)) )
-#define GET_BIT(reg, bit)    ( (reg)  & (1 << (bit)) )
+#define SET_BIT_HI(reg, bit) ( (reg) |= static_cast<uint32_t>((1 << (bit))) )
+#define GET_BIT(reg, bit)    ( (reg)  & static_cast<uint32_t>((1 << (bit))) )
 
 void TNvic::enableGlobalIrq(void) {
     __asm__("CPSIE I");
@@ -33,7 +33,7 @@ static uint8_t getBitPosition(TNvicIrq::TNvicIrq irq) {
 }
 
 static const uint8_t MSB_PRIORITY = 3;    // in IPR 3 MSB matters
-static const unsigned BITS_IN_BYTE = 8;
+static const uint8_t BITS_IN_BYTE = 8;
 static const uint8_t MAX_PRIORITY = 7;
 static const uint8_t MIN_PRIORITY = 0;
 
@@ -48,7 +48,7 @@ static bool isCorrectPriority(uint8_t priority) {
 }
 
 static uint8_t getPriorityValue(uint8_t priority) {
-    return ( priority << (BITS_IN_BYTE - MSB_PRIORITY) );
+    return ( static_cast<uint8_t>(priority << (BITS_IN_BYTE - MSB_PRIORITY)) );
 }
 
 void TNvic::enable(TNvicIrq::TNvicIrq irq) {
