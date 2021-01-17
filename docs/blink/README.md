@@ -1,73 +1,50 @@
 ### Blink
-Led blink is done using RTC and GPIO.
+Led blink is done using delay loop and GPIO registers.
+
+1. First of all we need define microcontroller `GPIO` direction set/clear
+registers and `GPIO` output set/clear registers:
 ```c
-#include <stdint.h>
-#include <gpio.h>
-#include <systime.h>
-#include <led.h>
-#include <sheduler.h>
-#include <clock.h>
-#include <rtc.h>
-#include <nvic.h>
+/* GPIO_0 direction set/clear registers; */
+#define GPIO_0_DIRSET (*(volatile uint32_t* )0x50000518u)
+#define GPIO_0_DIRCLR (*(volatile uint32_t* )0x5000051Cu)
 
-#define LED_1_BLINK_PERIOD  500
-#define LED_2_BLINK_PERIOD  501
-#define LED_3_BLINK_PERIOD  502
-#define LED_4_BLINK_PERIOD  503
-int task1(void);
-int task2(void);
-int task3(void);
-int task4(void);
+/* GPIO_0 output set/clear registers */
+#define GPIO_0_OUTSET (*(volatile uint32_t* )0x50000508u)
+#define GPIO_0_OUTCLR (*(volatile uint32_t* )0x5000050Cu)
+```
 
+2. Choose `LED1` at development kit, which is at `GPIO` port 0 and pin 13:
+```c
+#define LED_PIN 13
+```
+
+3. In `main()` set LED pin as output and loop `LED` toggle forever:
+```c
 int main(void) {
-    Clock_setHighFreqXoDebounce(HFXO_DEBOUNCE_1024US);
-    Clock_startHighFreqXo();
-    SysTick_init(RELOAD_1MS_64MHZ);
-
-    Clock_setLowFreqSource(CLOCK_LOW_FREQ_EXTERNAL);
-    Clock_startLowFreqXo();
-
-    RTC_setPrescaler(RTC_0, 32);
-    RTC_startCounter(RTC_0);
-    RTC_enableInterrupt(RTC_0, RTC_INT_TICK);
-
-    NVIC_enableIrq(RTC0);
-    NVIC_enableGlobalIrq();
-
-    LED_init(LED_1);
-    LED_init(LED_2);
-    LED_init(LED_3);
-    LED_init(LED_4);
-
-    Sheduler_addTask(&task1, LED_1_BLINK_PERIOD);
-    Sheduler_addTask(&task2, LED_2_BLINK_PERIOD);
-    Sheduler_addTask(&task3, LED_3_BLINK_PERIOD);
-    Sheduler_addTask(&task4, LED_4_BLINK_PERIOD);
-
-    Sheduler_run();
-
-    return 0;
-}
-
-int task1(void) {
-    LED_invert(LED_1);
-    return 0;
-}
-int task2(void) {
-    LED_invert(LED_2);
-    return 0;
-}
-int task3(void) {
-    LED_invert(LED_3);
-    return 0;
-}
-int task4(void) {
-    LED_invert(LED_4);
+    /* LED1 on DK is at GPIO port 0 and pin 13 */
+    /* set this port as output */
+    GPIO_0_DIRSET = 1 << LED_PIN;
+    
+    while (1) {
+        GPIO_0_OUTSET = 1 << LED_PIN;
+        delay_loop();
+        GPIO_0_OUTCLR = 1 << LED_PIN;
+        delay_loop();
+    }
+    
     return 0;
 }
 ```
 
----
-
-> All information and images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.
-> Any copyright belongs to NordicSemiconductors©
+4. Delay loop is defined as for lopp which does nothing. Note `volatile` keyword
+is used to do not let compiler to optimize this code section:
+```c
+void delay_loop() {
+    for (volatile uint32_t i = 0; i < 0x00100000; ++i ) {
+        ;
+    }
+}
+```
+The digit `0x00100000` is choosed experimentally to make blink visible. Because
+if it will be very small then `LED` toggle rate will be to high to see it by
+eye.
