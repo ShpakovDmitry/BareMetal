@@ -13,6 +13,7 @@ extern uint32_t __data_end;
 extern uint32_t __data_load;
 extern uint32_t __bss_start;
 extern uint32_t __bss_end;
+extern uint32_t __heap_start;
 
 extern void main(void);
 extern void fillHeap(uint32_t fillVal);
@@ -59,6 +60,15 @@ void callFiniArray(void) {
     while (array < __fini_array_end) {
         (*array)();
         array++;
+    }
+}
+
+void fillHeap(uint32_t fillVal) {
+    uint32_t *dst, *mspReg;
+    dst = &__heap_start;
+    __asm__("mrs %0, msp\n" : "=r" (mspReg));
+    while (dst < mspReg) {
+        *(dst++) = fillVal;
     }
 }
 

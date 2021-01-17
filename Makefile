@@ -1,4 +1,4 @@
-.PHONY := all clean flash submake link
+.PHONY := all clean
 .DEFAULT_GOAL := all
 
 TARGET := firmware
@@ -12,52 +12,46 @@ OBJDUMP := $(ARCH)-objdump
 OBJCOPY := $(ARCH)-objcopy
 OBJSIZE := $(ARCH)-size
 
-SOURCE_DIR := source
-BUILD_DIR := build
-LD_SCRIPT_DIR := etc/linker
+SOURCE_DIR := ./source
+BUILD_DIR := ./build
+OBJECT_DIR := $(BUILD_DIR)
 DIRS := $(BUILD_DIR)
+LD_SCRIPT_DIR := etc/linker
 
-rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
+CC_SRC_FILES := $(wildcard $(SOURCE_DIR)/*.c)
+CC_OBJ_FILES := $(CC_SRC_FILES:$(SOURCE_DIR)/%.c=$(OBJECT_DIR)/%.o)
 
+CC_FLAGS := -c -Wall -Werror -mcpu=$(MCU) -mthumb -Os -std=c18
+CC_FLAGS += -fdata-sections -ffunction-sections -ffreestanding -nostdinc
+CC_FLAGS += -idirafter ./include
 LD_SCRIPT_FILE := $(LD_SCRIPT_DIR)/nrf52840.ld
 LD_FLAGS := -T $(LD_SCRIPT_FILE) -Map $(BUILD_DIR)/$(TARGET).map --gc-sections
 LD_FLAGS += -nostartfiles -nolibc -nostdlib -nodefaultfiles
+
 OBJDUMP_FLAGS := --disassemble-all -z
 OBJCOPY_FLAGS := -O ihex 
 OBJSIZE_FLAGS := 
 
+$(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.c
+	$(CC) $(CC_FLAGS) $^ -o $@
+	$(OBJSIZE) $(OBJSIZE_FLAGS) $@ > $(@:%.o=%.s)
+	$(OBJDUMP) $(OBJDUMP_FLAGS) $@ >> $(@:%.o=%.s)
 
-link:
-	$(eval  CC_OBJ_FILES := $(call rwildcard,$(SOURCE_DIR),*.o))
+target: $(CC_OBJ_FILES)
 	$(LD) $(LD_FLAGS) $(CC_OBJ_FILES) -o $(BUILD_DIR)/$(TARGET).elf
 	$(OBJSIZE) $(OBJSIZE_FLAGS) $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).s
 	$(OBJDUMP) $(OBJDUMP_FLAGS) $(BUILD_DIR)/$(TARGET).elf >> $(BUILD_DIR)/$(TARGET).s
 	$(OBJCOPY) $(OBJCOPY_FLAGS) $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex
 	$(OBJSIZE) $(OBJSIZE_FLAGS) $(BUILD_DIR)/$(TARGET).elf
 
-CURRDIR := $(PWD)
 
 $(BUILD_DIR):
 	mkdir --parents $(DIRS)
 
 clean:
 	rm -rf $(DIRS)
-	make -C ./source/application clean ROOTDIR=$(CURRDIR)
-	make -C ./source/util/scheduler clean ROOTDIR=$(CURRDIR)
-	make -C ./source/util/ringbuffer clean ROOTDIR=$(CURRDIR)
-	make -C ./source/util/runtime clean ROOTDIR=$(CURRDIR)
-	make -C ./source/util/stdlib clean ROOTDIR=$(CURRDIR)
-	make -C ./source/target/nrf52840 clean ROOTDIR=$(CURRDIR)
 
-all: submake $(BUILD_DIR) link
-
-submake: 
-	make -C ./source/application ROOTDIR=$(CURRDIR)
-	make -C ./source/util/scheduler ROOTDIR=$(CURRDIR)
-	make -C ./source/util/ringbuffer ROOTDIR=$(CURRDIR)
-	make -C ./source/util/runtime ROOTDIR=$(CURRDIR)
-	make -C ./source/util/stdlib ROOTDIR=$(CURRDIR)
-	make -C ./source/target/nrf52840 ROOTDIR=$(CURRDIR)
+all: $(BUILD_DIR) $(CC_OBJ_FILES) target
 
 flash: all
 	nrfjprog -f nrf52 --program build/firmware.hex --sectorerase
