@@ -4,11 +4,9 @@
  *   date: 2020-18-25
  */
 
-#include <stdint.h>
+extern __UINT32_TYPE__ __stacktop;
 
-extern uint32_t __stacktop;
-
-__attribute__((section(".stack"), used)) uint32_t *__stack_init = &__stacktop;
+__attribute__((section(".stack"), used)) __UINT32_TYPE__ *__stack_init = &__stacktop;
 
 typedef void (*funcPtr)();
 

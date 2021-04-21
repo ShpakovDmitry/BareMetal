@@ -4,15 +4,13 @@
  *   date: 2020-08-20
  */
 
-#include <stdint.h>
-
 /* GPIO_0 direction set/clear registers; */
-#define GPIO_0_DIRSET (*(volatile uint32_t* )0x50000518u)
-#define GPIO_0_DIRCLR (*(volatile uint32_t* )0x5000051Cu)
+#define GPIO_0_DIRSET (*(volatile __UINT32_TYPE__* )0x50000518u)
+#define GPIO_0_DIRCLR (*(volatile __UINT32_TYPE__* )0x5000051Cu)
 
 /* GPIO_0 output set/clear registers */
-#define GPIO_0_OUTSET (*(volatile uint32_t* )0x50000508u)
-#define GPIO_0_OUTCLR (*(volatile uint32_t* )0x5000050Cu)
+#define GPIO_0_OUTSET (*(volatile __UINT32_TYPE__* )0x50000508u)
+#define GPIO_0_OUTCLR (*(volatile __UINT32_TYPE__* )0x5000050Cu)
 
 #define LED_PIN 13
 
@@ -34,7 +32,7 @@ int main(void) {
 }
 
 void delay_loop() {
-    for (volatile uint32_t i = 0; i < 0x00100000; ++i ) {
+    for (volatile __UINT32_TYPE__ i = 0; i < 0x00100000; ++i ) {
         ;
     }
 }
