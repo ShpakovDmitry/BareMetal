@@ -1,13 +1,7 @@
 ### AVR25BareMetal
 AVR25 architecture ATtiny2313 microcontroller bare metal bring-up without
-the uses of any libraries.
+the use of any libraries.
 All source code build using GNU GCC toolchain.
-
-#### Cloning the project
-To clone the project to your local directory, run the following:
-```bash
-git clone https://github.com/ShpakovDmitry/AVR25BareMetal.git
-```
 
 #### Toolchain setup
 To build the project following tools required:

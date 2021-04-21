@@ -1,7 +1,7 @@
 ### nRF52840DK BareMetal Blink 
 Baremetal blink on nRF52840DK using C++.
 
-nRF52840DK is ARM Cortex-M4 System-on-Crystal (SoC).
+nRF52840 is ARM Cortex-M4 System-on-Crystal (SoC).
 
 ##### Documentation in progress...
 
