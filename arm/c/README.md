@@ -1,6 +1,6 @@
 ### Description.
 Simple baremetal LED blink on nRF52840-DK.
-Below are steps how to get tools and setup DK.
+Below are steps how to get the tools and setup DK.
 
 ### Table of contents
 
