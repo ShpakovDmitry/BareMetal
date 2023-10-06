@@ -22,7 +22,7 @@ rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(su
 
 LD_SCRIPT_FILE := $(LD_SCRIPT_DIR)/nrf52840.ld
 LD_FLAGS := -T $(LD_SCRIPT_FILE) -Map $(BUILD_DIR)/$(TARGET).map --gc-sections
-LD_FLAGS += -nostartfiles -nolibc -nostdlib -nodefaultfiles
+LD_FLAGS += -nostdlib --print-memory-usage
 OBJDUMP_FLAGS := --disassemble-all -z
 OBJCOPY_FLAGS := -O ihex 
 OBJSIZE_FLAGS := 
