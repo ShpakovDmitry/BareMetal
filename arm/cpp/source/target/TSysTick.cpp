@@ -118,7 +118,7 @@ void TSysTick::setInterruptCallback(void (*cb)(void)) {
     handlerCallback = cb;
 }
 
-extern "C" __attribute__((isr)) void SYSTICK_Handler(void) {
+__attribute__((isr)) void SYSTICK_Handler(void) {
     sysTick->SYST_CSR &= 
         ~static_cast<uint32_t>((1 << TSysTickBits::SYST_CSR::TICKINT));
     
