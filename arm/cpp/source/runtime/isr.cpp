@@ -11,7 +11,7 @@ extern uint32_t __stacktop;
 
 __attribute__((section(".stack"), used)) uint32_t *__stack_init = &__stacktop;
 
-typedef void (*funcPtr)();
+using funcPtr = void (*)(void);
 
 extern "C" void __stop(void)  {
     while (true) {

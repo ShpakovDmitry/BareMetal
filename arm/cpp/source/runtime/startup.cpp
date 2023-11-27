@@ -6,7 +6,7 @@
 
 #include <cstdint>
 
-typedef void (*funcPtr)();
+using funcPtr = void (*)(void);
 
 extern uint32_t __data_start;
 extern uint32_t __data_end;
